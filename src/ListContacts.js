@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import escapeRegExp from "escape-string-regexp";
 import sortBy from "sort-by";
@@ -19,8 +20,8 @@ class ListContacts extends Component {
   };
 
   clearQuery = () => {
-      this.setState({ query: '',})
-  }
+    this.setState({ query: "" });
+  };
 
   render() {
     const { contacts, removeContact } = this.props;
@@ -29,9 +30,7 @@ class ListContacts extends Component {
     let showingContacts;
     if (query) {
       const match = new RegExp(escapeRegExp(query), "i"); //STUDYME
-      showingContacts = contacts.filter((contact) =>
-        match.test(contact.name)
-      );
+      showingContacts = contacts.filter((contact) => match.test(contact.name));
     } else {
       showingContacts = contacts;
     }
@@ -50,15 +49,18 @@ class ListContacts extends Component {
             value={query}
             onChange={(event) => this.updateQuery(event.target.value)} //the event is just an object that js gives us from the onChange prop
           />
+          <Link to="/create" className="add-contact">
+            Add Contact
+          </Link>
         </div>
 
         {showingContacts.length !== contacts.length && (
-            <div className='showing-contacts'>
-                <span>Now showing {showingContacts.length} of {contacts.length} total</span>
-                <button onClick={() => this.clearQuery()}>
-                    Show all
-                </button>
-            </div>
+          <div className="showing-contacts">
+            <span>
+              Now showing {showingContacts.length} of {contacts.length} total
+            </span>
+            <button onClick={() => this.clearQuery()}>Show all</button>
+          </div>
         )}
 
         <div className="contact-list">
