@@ -28,6 +28,14 @@ class App extends Component {
     this.setState({ screens: "createContact" });
   };
 
+  createContact = (contact) => {
+    ContactsAPI.create(contact).then((contact) => {
+      this.setState((state) => ({
+        contacts: state.contacts.concat([contact]),
+      }));
+    });
+  };
+
   render() {
     return (
       <div>
@@ -45,7 +53,17 @@ class App extends Component {
           />
           <button onClick={() => this.handleClick()}>Add Contact</button>
         </div>
-        <Route path="/create" component={CreateContact} />
+        <Route
+          path="/create"
+          render={({ history }) => (
+            <CreateContact
+              onCreateContact={(contact) => {
+                this.createContact(contact);
+                history.push("/");
+              }}
+            />
+          )}
+        />
       </div>
     );
   }
